@@ -1,5 +1,6 @@
 stages:
 - check
+- test
 
 pre-commit:
   stage: check
@@ -16,3 +17,38 @@ pre-commit:
       >&2 echo "hooks in your local Git clone by running \`make git-hooks-install\`.";
       exit 1;
     }
+
+test:linux:
+  stage: test
+  image: python:3
+  script:
+  - pip install .
+  - hadolint-get --hadolint-version latest -- --version
+
+test:macos:
+  stage: test
+  image: macos:catalina-xcode-python3
+  tags:
+  - libvirt
+  before_script:
+  - PYTHON_VERSION="$(python3 -c 'import sys; print("{}.{}".format(sys.version_info.major, sys.version_info.minor))')"
+  - sudo -H python3 -m pip install wheel
+  - sudo -H /Applications/Python\ ${PYTHON_VERSION}/Install\ Certificates.command
+  script:
+  - sudo -H python3 -m pip install .
+  - /Library/Frameworks/Python.framework/Versions/${PYTHON_VERSION}/bin/hadolint-get
+      --hadolint-version latest -- --version
+
+test:windows:
+  stage: test
+  image: windows:10-python3
+  tags:
+  - libvirt
+  before_script:
+  - PYTHON_VERSION="$(
+      vcvars_cmd python -c 'import sys; print("{}{}".format(sys.version_info.major, sys.version_info.minor))'
+    )"
+  - vcvars_cmd python -m pip install wheel
+  script:
+  - vcvars_cmd python -m pip install .
+  - /c/Program\ Files/Python${PYTHON_VERSION}/Scripts/hadolint-get.exe --hadolint-version latest -- --version
