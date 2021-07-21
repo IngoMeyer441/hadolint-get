@@ -1,5 +1,6 @@
 .*
 !.gitignore
+!.pre-commit-hooks.yaml
 *.egg-info/
 *.pyc
 __pycache__/
