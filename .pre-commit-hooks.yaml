@@ -1,0 +1,7 @@
+- id: hadolint-get
+  name: Lint Dockerfiles
+  description: Runs hadolint to lint Dockerfiles without a hadolint installation
+  entry: hadolint-get
+  language: python
+  types: ["dockerfile"]
+  args: ["--hadolint-version=latest", "--"]
