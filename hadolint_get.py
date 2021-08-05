@@ -187,6 +187,8 @@ def main() -> None:
             if isinstance(e, exception_class):
                 sys.exit(i)
         sys.exit(1)
+    except subprocess.CalledProcessError as e:
+        sys.exit(e.returncode)
     sys.exit(0)
 
 
