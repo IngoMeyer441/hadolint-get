@@ -14,7 +14,7 @@ Add
 
 ```yaml
 - repo: https://github.com/IngoMeyer441/hadolint-get
-  rev: 0.1.0
+  rev: 0.1.1
   hooks:
   - id: hadolint-get
   - args: ['--hadolint-version=2.6.0']
