@@ -16,7 +16,7 @@ __author__ = "Ingo Meyer"
 __email__ = "i.meyer@fz-juelich.de"
 __copyright__ = "Copyright © 2021 Forschungszentrum Jülich GmbH. All rights reserved."
 __license__ = "MIT"
-__version_info__ = (0, 1, 0)
+__version_info__ = (0, 1, 1)
 __version__ = ".".join(map(str, __version_info__))
 
 
@@ -143,6 +143,12 @@ Separate hadolint parameters with ` -- `.
         dest="print_tool_version",
         help="print the version number of this tool and exit",
     )
+    parser.add_argument(
+        "dockerfile",
+        action="store",
+        nargs="?",
+        help="path of the Dockerfile that will be checked",
+    )
     return parser
 
 
@@ -157,6 +163,8 @@ def parse_arguments() -> Tuple[argparse.Namespace, List[str]]:
     this_arg_list, hadolint_arg_list = split_args()
     parser = get_argumentparser()
     args = parser.parse_args(this_arg_list)
+    if args.dockerfile is not None:
+        hadolint_arg_list.append(args.dockerfile)
     return args, hadolint_arg_list
 
 
@@ -179,6 +187,8 @@ def main() -> None:
             if isinstance(e, exception_class):
                 sys.exit(i)
         sys.exit(1)
+    except subprocess.CalledProcessError as e:
+        sys.exit(e.returncode)
     sys.exit(0)
 
 

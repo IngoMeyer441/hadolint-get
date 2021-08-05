@@ -7,7 +7,7 @@ pre-commit:
   stage: check
   image: python:3
   before_script:
-  - pip install pre-commit
+  - pip install "pre-commit==2.13.0"
   script:
   - TMP_MSG_FILE="$(mktemp)"
   - git log -1 --pretty=%B > "${TMP_MSG_FILE}"
@@ -24,7 +24,7 @@ test:linux:
   image: python:3
   script:
   - pip install .
-  - hadolint-get --hadolint-version latest -- --version
+  - hadolint-get --hadolint-version 2.6.0 -- --version
 
 test:macos:
   stage: test
@@ -38,7 +38,7 @@ test:macos:
   script:
   - sudo -H python3 -m pip install .
   - /Library/Frameworks/Python.framework/Versions/${PYTHON_VERSION}/bin/hadolint-get
-      --hadolint-version latest -- --version
+      --hadolint-version 2.6.0 -- --version
 
 test:windows:
   stage: test
@@ -52,7 +52,7 @@ test:windows:
   - vcvars_cmd python -m pip install wheel
   script:
   - vcvars_cmd python -m pip install .
-  - /c/Program\ Files/Python${PYTHON_VERSION}/Scripts/hadolint-get.exe --hadolint-version latest -- --version
+  - /c/Program\ Files/Python${PYTHON_VERSION}/Scripts/hadolint-get.exe --hadolint-version 2.6.0 -- --version
 
 deploy-to-github:
   stage: deploy
