@@ -143,6 +143,12 @@ Separate hadolint parameters with ` -- `.
         dest="print_tool_version",
         help="print the version number of this tool and exit",
     )
+    parser.add_argument(
+        "dockerfile",
+        action="store",
+        nargs="?",
+        help="path of the Dockerfile that will be checked",
+    )
     return parser
 
 
@@ -157,6 +163,8 @@ def parse_arguments() -> Tuple[argparse.Namespace, List[str]]:
     this_arg_list, hadolint_arg_list = split_args()
     parser = get_argumentparser()
     args = parser.parse_args(this_arg_list)
+    if args.dockerfile is not None:
+        hadolint_arg_list.append(args.dockerfile)
     return args, hadolint_arg_list
 
 
